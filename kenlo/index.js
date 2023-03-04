@@ -7,6 +7,7 @@ app.use((req, res, next) => {
     Para fins de testar se o código funciona foi feita a verificação com "localhost:3000",
     porém se fosse em produção, a verificação acima seria req.headers.host === 'kenlo.com.br'
     */
+    console.log('batendo aqui...');
     if (req.url.includes('kenlo.com.br')) {
       if (req.url.includes('.br/')) {
         const urlEdit = req.url.split('br/');
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
       }
       return redirectKenlo(res);
     }
+    
     
     return pageNotFound(res);
   }
@@ -38,6 +40,7 @@ function pageNotFound(res) {
 }
 
 function buildReturn(res) {
+  
   const listReturn = {
     "total": 10,
     "items": [
@@ -55,8 +58,15 @@ function buildReturn(res) {
       }
     ]
   };
+
   res.send(listReturn);
+  
 }
+
+app.get('https://www.kenlo.com.br/lista', (req, res) => {
+  console.log('***entrei no app GET')
+  return buildReturn(res);
+});
 
 app.listen(3000, () => {
   console.log('Servidor iniciado na porta 3000!');
